@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <title>Cadastro Compra</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css" >
+    <script src="../static/javascript/functions.js"></script>
+    <script src="../static/javascript/jquery.min.js"></script>
+    <script src="../static/javascript/bootstrap.min.js"></script>
+  </head>
+  <body>
+    
+    <!--Menu-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">E-COMMERCE</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
+            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/Product">Product</a>
+            <a class="nav-link" href="/Client">Client</a>
+            <a class="nav-link active" aria-current="page">Buy</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+    
+    <div class="card">
+      <h3 class="card-header text-center font-weight-bold text-uppercase py-4">Registro de Compra</h3>
+      <span class="table-add float-right mb-3 mr-2"></span>
+      
+      <div class="card-body">
+        <form action="/CadastraCompra/adicionar" method="POST" onSubmit="document.getElementById('sendrecords').disabled=true;">
+          <div class="form-group">
+            <label for="SelectCliente">Lista de Clientes</label>
+            <select class="form-control" id="cli" name="sCliente">
+              <option value=0>Selecione...</option>
+              {% for cliente in clientes %}
+              <option value={{cliente.idCliente}}>{{cliente.FirstName}}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="SelectProduto">Lista de Produto</label>
+            <select class="form-control" id="prod" name="sProduto">
+              <option value=0>Selecione...</option>
+              {% for produto in produtos %}
+              <option value={{produto.idProduto}}>{{produto.Descricao}}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="SelectQuantidade">Produto</label>
+            <select class="form-control" id="qtd" name="sQtd">
+              <option value=0>Selecione...</option>
+              <option value=1>1</option>
+              <option value=2>2</option>
+              <option value=3>3</option>
+              <option value=4>4</option>
+            </select>
+          </div>
+          <button id="sendrecords" type="submit" class="btn btn-success">Salvar</button>
+        </form>
+
+        <div class="container">
+          {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+    
+          {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            <span>{{message}}</span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          {% endfor %}
+    
+          {% endif %}
+          {% endwith %}
+        </div> 
+    
+        <main>
+        {% block main %}{% endblock %}
+        </main>
+
+        <div id="table" class="table-editable">
+          <span class="table-add float-right mb-3 mr-2"></span>
+          <table class="table table-bordered table-responsive-md table-striped text-center">
+            <thead>
+              <tr>
+                <th class="text-center">Cliente:</th>
+                <th class="text-center">Produto</th>
+                <th class="text-center">Quantidade</th>
+                <th class="text-center">Apagar</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for buy, client, product  in lista %}
+              <tr>
+                <td>
+                  <span class="pt-3-half" contenteditable="false">{{client.FirstName}}</span>
+                </td>
+                <td>
+                  <span class="pt-3-half" contenteditable="false">{{product.Descricao}}</span>
+                </td>
+                <td>
+                  <span class="pt-3-half" contenteditable="false">{{buy.Quantidade}}</span>
+                </td>
+                <td>
+                  <span class="table-remove">
+                  <form method="POST" action="CadastraCompra/apagar">
+                      <input type="hidden" value="{{buy.idVenda}}" name="description">
+                      <input type="submit" class="btn btn-danger btn-rounded btn-sm my-0" value="Apagar">
+                  </form>
+                  </span>
+                </td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      </div>  
+  </body>
+</html>

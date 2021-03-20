@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Cadastro de Produto</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="../static/css/bootstrap.min.css" >
+        <script src="../static/javascript/functions.js"></script>
+        <script src="../static/javascript/jquery.min.js"></script>
+        <script src="../static/javascript/bootstrap.min.js"></script>
+     </head>
+    <body>
+      <!--Menu-->
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">E-COMMERCE</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+              <a class="nav-link" href="/">Home</a>
+              <a class="nav-link active" aria-current="page">Product</a>
+              <a class="nav-link" href="/Client">Client</a>
+              <a class="nav-link" href="/Buy">Buy</a>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+<!-- Editable table -->
+<div class="card">
+  <h3 class="card-header text-center font-weight-bold text-uppercase py-4">Cadastro de Produto</h3>
+  
+  <div class="card-body">
+    <form action="CadastraProduto/adicionar" method="POST" onSubmit="document.getElementById('sendrecords').disabled=true;">
+      <div class="form-group">
+        <label for="lProduto">Produto</label>
+        <input type="text" class="form-control" name="prodDescricao" id="idProduto" placeholder="Descrição do Produto" maxlength="50" onkeypress="return FormatDescription(event)">
+      </div>
+      <div class="form-group">
+        <label for="lCodigo">Codigo</label>
+        <input type="text" class="form-control" name="prodEmbalagem" id="idCodigo" placeholder="Codigo do Produto" maxlength="20" onkeypress="return FormatCode(event)">
+      </div>
+      <button id="sendrecords" type="submit" class="btn btn-success">Salvar</button>
+    </form>
+
+    <div class="container">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+
+      {% for category, message in messages %}
+      <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+        <span>{{message}}</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% endfor %}
+
+      {% endif %}
+      {% endwith %}
+    </div> 
+
+    <main>
+    {% block main %}{% endblock %}
+    </main>
+
+    <div id="table" class="table-editable">
+      <span class="table-add float-right mb-3 mr-2"></span>
+      <table class="table table-bordered table-responsive-md table-striped text-center">
+        <thead>
+          <tr>
+            <th class="text-center">Item</th>
+            <th class="text-center">Atualizar</th>
+            <th class="text-center">Apagar</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for produto in produtos %}
+          <tr>
+            <td>
+              <span class="pt-3-half" contenteditable="false">{{produto.Descricao}}</span>
+            </td>
+
+            <td>
+              <span class="table-atualizar">
+              <form method="POST" action="CadastraProduto/atualizar" onSubmit="document.getElementById('sendUpdate').disabled=true;">
+                  <input type="hidden" value="{{produto.idProduto}}" name="cod">
+                  <input type="hidden" value="{{produto.idProduto}}" name="old">
+                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalUpdate">Atualizar</button>
+                  
+                  <!--Modal Update Product-->
+                  <div class="modal fade" id="ModalUpdate" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="msgModal">Atualizar Produto</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <div>
+                            <div class="form-group">
+                              <div>
+                                <p>Descrição:</p>
+                              </div>
+                              <input type="text" id="idNovo" name="new" class="form-control" maxlength="50" placeholder="Nova Descrição" onkeypress="return FormatDescription(event)">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                          <button type="submit" class="btn btn-primary" id="sendUpdate">Atualizar</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+              </form>
+              </span>
+
+            </td>
+
+            <td>
+              <span class="table-remove">
+              <form method="POST" action="CadastraProduto/apagar">
+                  <input type="hidden" value="{{produto.idProduto}}" name="description">
+                  <button type="submit" class="btn btn-danger" >Apagar</button>
+              </form>
+              </span>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+      $("#idProduto").bind('paste', function(e) {
+        e.preventDefault();
+      });
+
+      $("#idCodigo").bind('paste', function(e) {
+        e.preventDefault();
+      });
+
+      $("#idNovo").bind('paste', function(e) {
+        e.preventDefault();
+      });
+    });
+
+
+</script>
+
+</body>
+</html>
