@@ -91,7 +91,7 @@ def Productadd():
 @app.route("/CadastraProduto/atualizar", methods=["POST"])
 def ProductUpdate():
     _description = request.form.get("new")
-    codigo = request.form.get("old")
+    codigo = request.form.get("cod")
     
     if codigo != None:
         produto = Produto.query.filter_by(idProduto=codigo).first()
@@ -157,7 +157,7 @@ def Clientadd():
 @app.route("/CadastraCliente/atualizar", methods=["POST"])
 def ClientUpdate():
     _description = request.form.get("new")
-    codigo = request.form.get("old")
+    codigo = request.form.get("cod")
     
     if codigo != None:
         cliente = Cliente.query.filter_by(idCliente=codigo).first()

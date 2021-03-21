@@ -80,18 +80,16 @@
         {% for produto in produtos %}
           <tr>
             <td>
-              <span class="pt-3-half" contenteditable="false">{{produto.Descricao}}</span>
+              <span class="pt-3-half"  contenteditable="false">{{produto.Descricao}}</span>
             </td>
 
             <td>
               <span class="table-atualizar">
-              <form method="POST" action="CadastraProduto/atualizar" onSubmit="document.getElementById('sendUpdate').disabled=true;">
-                  <input type="hidden" value="{{produto.idProduto}}" name="cod">
-                  <input type="hidden" value="{{produto.idProduto}}" name="old">
-                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalUpdate">Atualizar</button>
+                <form method="POST" action="CadastraProduto/atualizar" onSubmit="document.getElementById('sendUpdate').disabled=true;">
+                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalUpdate{{produto.idProduto}}">Atualizar</button>
                   
                   <!--Modal Update Product-->
-                  <div class="modal fade" id="ModalUpdate" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+                  <div class="modal fade" id="ModalUpdate{{produto.idProduto}}" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
@@ -106,21 +104,20 @@
                               <div>
                                 <p>Descrição:</p>
                               </div>
-                              <input type="text" id="idNovo" name="new" class="form-control" maxlength="50" placeholder="Nova Descrição" onkeypress="return FormatDescription(event)">
+                                <input type="text" id="idNovo" name="new" class="form-control" maxlength="50" placeholder="Nova Descrição" onkeypress="return FormatDescription(event)">
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                          <button type="submit" class="btn btn-primary" id="sendUpdate">Atualizar</button>
+                          <div class="modal-footer">
+                              <input type="hidden" value="{{produto.idProduto}}" name="cod">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                              <button type="submit" class="btn btn-primary" id="sendUpdate">Atualizar</button>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-
-              </form>
+                </form>
               </span>
-
             </td>
 
             <td>

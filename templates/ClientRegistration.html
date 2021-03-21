@@ -89,10 +89,10 @@
               <form method="POST" action="CadastraCliente/atualizar" onSubmit="document.getElementById('sendUpdate').disabled=true;">
                   <input type="hidden" value="{{cliente.idCliente}}" name="cod">
                   <input type="hidden" value="{{cliente.idCliente}}" name="old">
-                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalUpdate">Atualizar</button>
+                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalUpdate{{cliente.idCliente}}">Atualizar</button>
                   
                   <!--Modal Update Product-->
-                  <div class="modal fade" id="ModalUpdate" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+                  <div class="modal fade" id="ModalUpdate{{cliente.idCliente}}" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
